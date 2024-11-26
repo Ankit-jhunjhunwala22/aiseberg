@@ -29,16 +29,17 @@ Authentication System:
                 } 
             we will validate that we have a user with the given email and it was not created via google open id connect based in field google_id (should be null)
 
-            1.2) we generate a new jwt token (reset token) in auth_service.request_password_reset method with certail ttl and email and new password info
+            1.2) we generate a new jwt token (reset token) in auth_service.request_password_reset method with expiration ttl
 
         2) A reset link is generated and sent to user email - sample reset link = [GET] http://file_frontend.com/reset-password?token={reset_token}
-        3) once the user clicks on reset link, it will directed to file.com ui asking for new password
+        3) once the user clicks on reset link, he will be directed to file.com ui asking for new password
         4) user will add new password then ui will hit post call
             [POST] /auth/reset-password
             {
                 "token":<reet token>,
                 "new_password": <new passowrd>
             }
+        5) /auth/reset-password will validate token passed, and if the token is valid, new_password will be set for the user.
 
 
 
@@ -46,7 +47,7 @@ Authentication System:
 
     Email/Password Authentication account lock out flow
         1) we have defined two configs MAX_FAILED_ATTEMPTS = 5 (Maximum allowed failed attempts) LOCKOUT_DURATION = 15(Lockout period in minutes)
-        2) we have column "last_failed_attempt", this column tells us when was the last uncessful login attempt, column "failed_attempts" that counts the consecutive failed atempt to login by user and is_locked column which tells whether user account is locked
+        2) we have column "last_failed_attempt" in users table, this column tells us when was the last uncessful login attempt, column "failed_attempts" that counts the consecutive failed atempt to login by user and is_locked column which tells whether user account is locked
         3) in auth_Service.login_with_email_password method, we check if the user have >= MAX_FAILED_ATTEMPTS then we lock the user account by setting is_locked to true for LOCKOUT_DURATION
         4) if the account is locked, user has to wait for LOCKOUT_DURATION to retry again
         5) once user sucessfully logins after the LOCKOUT_DURATION, we reset failed_attempts = 0 and is_locked = False

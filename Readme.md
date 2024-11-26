@@ -3,16 +3,17 @@ Authentication system:
 2) google_auth.py routes manage google openid connect 
 
 
-File upload
-2) file.py routes are managed by  file_service defined in file_service.py
+
+File upload system
+1) file.py routes are managed by  file_service defined in file_service.py
+
+
 
 Role based access and permission based access
 1) We have Two roles by Default - Admin and User
 2) We have Three permission by default - View_all, View_own and upload
 3) we have user_roles table to add many to many relationship to effectively manage role based and permission based access
-4) defined two decorator permission_required and role_required to add on routes where we need relavent role and permission based checks
-
-database models are defined in models.py
+4) defined two decorator permission_required and role_required to add on routes where we need relavent role and permission based checks, database models are defined in models.py
 
 
 
